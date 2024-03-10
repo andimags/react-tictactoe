@@ -3,15 +3,14 @@ import Square from "./components/Square";
 
 function Main() {
     const [currentPlayer, setCurrentPlayer] = useState("X");
-    const handleClickSquare = () => {
+    const [squares, setSquares] = useState(Array(9).fill(null));
+
+    const handleClickSquare = (index) => {
+        const newSquares = squares.slice();
+        newSquares[index] = squares[index] ?? currentPlayer;
         setCurrentPlayer(currentPlayer == "X" ? "O" : "X");
+        setSquares(newSquares);
     };
-
-    const squares = [];
-
-    for (let i = 0; i < 9; i++) {
-        squares.push(<Square key={i} onClick={() => handleClickSquare()} />);
-    }
 
     return (
         <>
@@ -21,7 +20,13 @@ function Main() {
                         Current player: {currentPlayer}
                     </h2>
                     <div className="grid grid-cols-3 gap-x-2 gap-y-2 bg-slate-400 p-4">
-                        {squares}
+                        {squares.map((square, index) => (
+                            <Square
+                                key={index}
+                                value={square}
+                                onClick={() => handleClickSquare(index)}
+                            />
+                        ))}
                     </div>
                 </div>
             </div>
